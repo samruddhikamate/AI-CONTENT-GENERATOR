@@ -5,6 +5,7 @@ import OutputSection from '../_components/OutputSection'
 import { TEMPLATE } from '../../_components/TemplateListSection'
 import Templates from '@/app/(data)/Templates'
 import { ArrowLeft} from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import Link from 'next/link';
 import { chatSession } from '@/utils/AiModel'
