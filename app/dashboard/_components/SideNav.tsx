@@ -1,4 +1,5 @@
 "use client"
+import { SignOutButton } from '@clerk/nextjs'
 import { log } from 'console'
 import { FileClock, Home, Settings, WalletCards } from 'lucide-react'
 import Image from 'next/image'
@@ -53,6 +54,9 @@ function SideNav() {
                     <h2>{menu.name}</h2>
                 </div>
             ))}
+            <div className='w-full flex items-center justify-center mt-auto'>
+                <SignOutButton />
+            </div>
         </div>
 </div>
   )
