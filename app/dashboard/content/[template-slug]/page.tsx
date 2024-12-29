@@ -14,6 +14,8 @@ import { AIOutput } from '@/utils/schema'
 import { db } from '@/utils/db'
 import { totalUsageContext } from '@/app/(context)/TotalUsageContext'
 import { useRouter } from 'next/navigation'
+import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext'
+import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext'
 
 interface PROPS{
     params:{
@@ -29,13 +31,23 @@ function CreateNewContent(props:PROPS) {
     const {user}=useUser();
     const router=useRouter();
     const{totalUsage,setTotalUsage}=useContext(totalUsageContext)
+    // const{userSubscription,setUserSubscription}=useContext(userSubscriptionContext)
+    const { userSubscription, setUserSubscription } = useContext(UserSubscriptionContext) 
+    const {updateCreditUsage,setUpdateCreditUsage} = useContext(UpdateCreditUsageContext)
+  
+    /**
+     * Used to generate AI content from AI
+     * @param FormData 
+     * @returns 
+     */
 
     const GenerateAIContent=async(FormData:any)=>{
-      // if(totalUsage>=10000){
-      //   console.log("Please Upgrade");
-      //   router.push('/dashboard/billing')
-      //   return;
-      // }
+      if(totalUsage>=10000&&!userSubscription)
+      {
+        console.log("Please Upgrade");
+        router.push('/dashboard/billing')
+        return;
+      }
       setLoading(true);
       const SelectedPrompt=selectedTemplate?.aiPrompt;
       const FinalAIPrompt=JSON.stringify(FormData)+", "+SelectedPrompt;
@@ -44,6 +56,8 @@ function CreateNewContent(props:PROPS) {
       setAiOutput(result?.response.text());
       await SaveInDb(FormData,selectedTemplate?.slug,result?.response.text())
       setLoading(false);
+
+      setUpdateCreditUsage(Date.now())
     }
 
     const SaveInDb=async(formData:any,slug:any,aiResp:string)=>{

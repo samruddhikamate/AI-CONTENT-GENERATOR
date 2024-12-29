@@ -1,20 +1,28 @@
 "use client"
 import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { error } from 'console';
 import { Loader2Icon } from 'lucide-react';
+import { UserSubscription } from '@/utils/schema';
+import { db } from '@/utils/db';
+import { useUser } from '@clerk/nextjs';
+import moment from 'moment';
+import router from 'next/router';
+import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext';
 
 function Billing() {
  const [loading,setLoading]=useState(false);
+ const {user }=useUser();
+ const {userSubscription,setUserSubscription}=useContext(UserSubscriptionContext);
 
   const CreateSubscription=()=>{
     setLoading(true);
       axios.post('/api/create-subscription', {}).then(resp => {
          console.log(resp.data);
-         OnPayment(resp.data.id)},
-         (error)=> {
-        setLoading(false);
+         OnPayment(resp.data.id)
+        },(error)=> {
+          setLoading(false);
     })
   }
 
@@ -26,6 +34,10 @@ function Billing() {
         description:'Monthly Subscription',
         handler:async(resp:any)=>{
           console.log(resp);
+          if(resp){
+            SaveSubcription(resp.razorpay_payment_id);
+            router.push('/dashboard/content');
+          }
           setLoading(false);
       }
     }
@@ -33,6 +45,20 @@ function Billing() {
     //@ts-ignore
     const rzp = new window.Razorpay(options);
     rzp.open();
+    }
+
+    const SaveSubcription=async(paymentId:string)=>{
+      const result=await db.insert(UserSubscription).values({
+        email:user?.primaryEmailAddress?.emailAddress,
+        userName:user?.fullName,
+        active:true,
+        paymentId:paymentId,
+        joinDate:moment().format('DD/MM/yyyy')
+      });
+      console.log(result);
+      if(result){
+        window.location.reload();
+      }
 
     }
 
@@ -205,17 +231,17 @@ function Billing() {
 
           <button
           disabled={loading}
-          onClick={()=>OnPayment()}
+          onClick={()=>CreateSubscription()}
             className="mt-8 block rounded-full border flex gap-2 items-center border-indigo-600 px-12 py-3 text-center text-sm font-medium bg-gray-900 text-white hover:ring-1 hover:ring-indigo-600 focus:outline-none"
           >
             
             {loading&&<Loader2Icon className='animate-spin'/>}
-            Get Started
+            {userSubscription?'Active Plan': 'Get Started'}
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default Billing;

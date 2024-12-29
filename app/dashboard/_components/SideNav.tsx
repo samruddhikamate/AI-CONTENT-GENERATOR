@@ -10,32 +10,32 @@ import {  History, CreditCard} from 'lucide-react'
 function SideNav() {
   const MenuList = [
     {
-      name: "Home",
+      name: 'Home',
       icon: Home,
-      path: "/dashboard",
+      path: '/dashboard',
     },
     {
-      name: "History",
+      name: 'History',
       icon: FileClock,
-      path: "/dashboard/history",
+      path: '/dashboard/history',
     },
     {
-      name: "Billing",
+      name: 'Billing',
       icon: WalletCards,
-      path: "/dashboard/billing",
+      path: '/dashboard/billing',
     },
     {
-      name: "Setting",
+      name: 'Settings',
       icon: Settings,
-      path: "/dashboard/setting",
+      path: '/dashboard/Settings',
     },
   ];
 
   const path = usePathname();
 
   useEffect(() => {
-    console.log(path);
-  }, []);
+    console.log(path)
+  }, [])
 
   return (
     <div className="h-screen p-5 shadow-sm border bg-white flex flex-col">
@@ -60,11 +60,11 @@ function SideNav() {
         ))}
       </div>
 
-      <div className="absolute bottom-20 left-0 w-full">
+      <div className="absolute bottom-10 left-0 w-full">
         <UsageTrack />
       </div>
 
-      <div className="absolute bottom-2 left-0 w-full px-5">
+      {/* <div className="absolute bottom-2 left-0 w-full px-5">
         <SignOutButton>
           <button
             className="w-full py-3 bg-gradient-to-r text-primary from-purple-500 to-pink-500 text-white rounded-lg text-center font-semibold shadow-lg hover:opacity-90 transition-opacity"
@@ -73,7 +73,7 @@ function SideNav() {
             Sign Out
           </button>
         </SignOutButton>
-      </div>
+      </div> */}
       
     </div>
   );
