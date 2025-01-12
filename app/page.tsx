@@ -32,7 +32,7 @@ export default function Home() {
         {/* Membership Banner */}
         <div className="flex justify-center mt-8">
           <div className="inline-flex items-center bg-gray-100 rounded-full px-4 py-1">
-            <span className="text-sm text-gray-600">TUBEGURU.JI Membership - Join Now</span>
+            <span className="text-sm text-gray-600">Unlock Exclusive Benefits with Membership - Join Now</span>
             <ArrowRight className="w-4 h-4 ml-2 text-gray-600" />
           </div>
         </div>

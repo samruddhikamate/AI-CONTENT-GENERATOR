@@ -1,5 +1,5 @@
 // /api/create-subscription
-
+import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 export async function POST(req, res) {
     let instance = new Razorpay({
@@ -7,7 +7,7 @@ export async function POST(req, res) {
         key_secret: process.env.RAZORPAY_SECRET_KEY,
     })
 
-  const result = await instance.orders.create({
+  const result = await instance.subscriptions.create({
     plan_id:process.env.SUBSCRIPTION_PLAN_ID,
     customer_notify:1,
     quantity:1,
@@ -18,6 +18,6 @@ export async function POST(req, res) {
     }
   });
 
-  return NextReaponse.json(result);
+  return NextResponse.json(result);
 
 }
