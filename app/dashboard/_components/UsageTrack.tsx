@@ -42,13 +42,16 @@ function UsageTrack() {
     }
     
     const IsUserSubscribe=async () => {
-        const result=await db.select().from(UserSubscription).where(eq(UserSubscription.email,user?.primaryEmailAddress?.emailAddress));
-        if(result)
-        {
-            setUserSubscription(true);
-            setMaxWords(100000);
+        const email = user?.primaryEmailAddress?.emailAddress;
+        if (email) {
+            const result = await db.select().from(UserSubscription).where(eq(UserSubscription.email, email));
+            if (result.length > 0) {
+                setUserSubscription(true);
+                setMaxWords(100000);
+            }
         }
     }
+
 
     const GetTotalUsage=(result:HISTORY[])=>{
         let total:number=0;
@@ -79,3 +82,4 @@ function UsageTrack() {
 }
 
 export default UsageTrack
+
