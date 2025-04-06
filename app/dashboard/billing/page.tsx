@@ -210,9 +210,9 @@ function Billing() {
       setLoading(true);
       const response = await axios.post("/api/create-subscription", {});
       console.log("Subscription API Response:", response.data);
-      
-      if (response.data?.id) {
-        OnPayment(response.data.id);
+
+      if (response.data && (response.data as any).id) {
+        OnPayment((response.data as any).id);
       } else {
         throw new Error("Invalid subscription response");
       }
@@ -221,6 +221,8 @@ function Billing() {
       setLoading(false);
     }
   };
+
+
 
   const OnPayment = (subId: string) => {
     if (!isRazorpayLoaded) {
