@@ -15,13 +15,14 @@ export default function Navbar({ isLoggedIn, onLogin, onLogout }: NavbarProps) {
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious()
+    const previous = scrollY.getPrevious() || 0
     if (latest > previous && latest > 150) {
       setHidden(true)
     } else {
       setHidden(false)
     }
   })
+
 
   return (
     <motion.nav
